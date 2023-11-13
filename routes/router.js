@@ -8,9 +8,17 @@ router.get("/", (req, res) => {
 router.get("/login", (req, res) => {
   res.render("login", { pageName: "Login" })
 })
+router.post("/login", (req, res) => {
+  console.log("Loggining")
+  res.render("about", { pageName: "About" })
+})
 
 router.get("/register", (req, res) => {
   res.render("register", { pageName: "Register" })
+})
+router.post("/register", (req, res) => {
+  console.log("Registering")
+  res.render("home", { pageName: "Home" })
 })
 
 router.get("/about", (req, res) => {
