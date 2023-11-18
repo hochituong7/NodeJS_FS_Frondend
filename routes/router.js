@@ -5,22 +5,52 @@ const {
   validateLogin,
 } = require("../validation/validation")
 const messages = require("../utilities/messages")
+const { postRegister, postLogin } = require("../services/userService")
 
 const router = express.Router()
+let session = require("express-session")
+require("dotenv").config()
+
+//use middleware to create express session
+router.use(
+  session({
+    secret: process.env.jwt_secret,
+    resave: false,
+    saveUninitialized: true,
+  })
+)
 router.get("/", (req, res) => {
-  res.render("home", { pageName: "Home" })
+  session = req.session
+  res.render("home", { pageName: "Home", session: session })
 })
 
 router.get("/login", (req, res) => {
-  res.render("login", { pageName: "Login" })
+  session = req.session
+  res.render("login", { pageName: "Login", session: session })
 })
 router.post("/login", (req, res) => {
+  session = req.session
   const errors = validateLogin(req.body)
   if (isEmpty(errors)) {
-    res.render("home", {
-      pageName: "Login",
-      message: messages.login_successful,
-    })
+    // cal to backend
+    postLogin(req.body)
+      .then((result) => {
+        session.name = result.data.user.firstName
+        session.logged = result.data.logged
+        session.token = result.data.token
+
+        res.render("home", {
+          pageName: "Home",
+          message: result.data.message,
+          session: session,
+        })
+      })
+      .catch((err) => {
+        res.render("login", {
+          pageName: "Login",
+          message: err.response.data.error.message,
+        })
+      })
   } else {
     res.render("login", {
       pageName: "Login",
@@ -40,10 +70,19 @@ router.get("/register", (req, res) => {
 router.post("/register", (req, res) => {
   const errors = validateRegistration(req.body)
   if (isEmpty(errors)) {
-    res.render("login", {
-      pageName: "Login",
-      message: messages.register_successful,
-    })
+    postRegister(req.body)
+      .then((result) => {
+        res.render("login", {
+          pageName: "Login",
+          message: result.data.message,
+        })
+      })
+      .catch((err) => {
+        res.render("register", {
+          pageName: "Registration",
+          message: err.response.data.error.message,
+        })
+      })
   } else {
     res.render("register", {
       pageName: "Registration",
@@ -55,14 +94,22 @@ router.post("/register", (req, res) => {
 })
 
 router.get("/about", (req, res) => {
-  res.render("about", { pageName: "About" })
+  session = req.session
+  res.render("about", { pageName: "About", session: session })
 })
 
 router.get("/books", (req, res) => {
-  res.render("books", { pageName: "Books" })
+  session = req.session
+  res.render("books", { pageName: "Books", session: session })
 })
 router.get("/authors", (req, res) => {
-  res.render("authors", { pageName: "Authors" })
+  session = req.session
+  res.render("authors", { pageName: "Authors", session: session })
+})
+
+router.get("/logout", (req, res) => {
+  req.session.destroy(null)
+  res.render("home", { pageName: "Home" })
 })
 
 // <title><%= pageName %></title>

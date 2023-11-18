@@ -22,12 +22,12 @@ const validateRegistration = (body) => {
     errors.address = "Address is required"
   }
 
-  if (
-    body.email.trim().length < 2 ||
-    !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\. \w{2,3})+$/.test(body.email.trim())
-  ) {
-    errors.email = "Email invalid format"
-  }
+  // if (
+  //   body.email.trim().length < 2 ||
+  //   !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\. \w{2,3})+$/.test(body.email.trim())
+  // ) {
+  //   errors.email = "Email invalid format"
+  // }
   return errors
 }
 
