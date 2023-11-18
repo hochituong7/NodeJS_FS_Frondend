@@ -6,7 +6,7 @@ const app = express()
 app.use(cors())
 // json request
 app.use(express.json())
-
+app.use(express.urlencoded({ extended: true }));
 // middleware template
 app.set("view engine", "ejs")
 app.engine("ejs", require("ejs").__express)

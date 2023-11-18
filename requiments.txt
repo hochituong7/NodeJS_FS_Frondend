@@ -1,0 +1,5 @@
+create a validation.js file -> create a errors object: firstNameMgs =" First name is required"
+create a validateRegister(req.body)
+create a validateLogin(req.body)
+
+update the routes to accept our validation

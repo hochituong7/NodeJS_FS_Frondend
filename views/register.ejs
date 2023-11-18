@@ -50,12 +50,14 @@
               action="/register"
               method="POST"
             >
+            <% if(typeof(message) != "undefined"){ %>
+              <h4 style="color: red"><%-message%>*</h4>
+              <%}%>
               <!-- Email address input-->
                 <div class="row input-group-newsletter">
                     <div class="col">
                         <input
                         class="form-control"
-                        id="firstName"
                         type="text"
                         name="firstName"
                         placeholder="Enter firstName..."
@@ -63,6 +65,9 @@
                         
                         />
                   </div>
+                  <% if(typeof(errs) != "undefined"){ %>
+                    <h4 style="color: red"><%-errs.firstName%>*</h4>
+                    <%}%>
                 </div>
                 <div class="space"></div>
                 <div class="row input-group-newsletter">
@@ -76,6 +81,9 @@
                       aria-label="Enter lastName..."
                     
                     />
+                    <% if(typeof(errs) != "undefined"){ %>
+                      <h4 style="color: red"><%-errs.lastName%>*</h4>
+                      <%}%>
                   </div>
                 </div>
                 <div class="space"></div>
@@ -90,6 +98,9 @@
                         aria-label="Enter email address..."
                        
                     />
+                    <% if(typeof(errs) != "undefined"){ %>
+                      <h4 style="color: red"><%-errs.email%>*</h4>
+                      <%}%>
                     </div>
                 </div>
                 <div class="space"></div>
@@ -104,6 +115,9 @@
                         aria-label="Enter address..."
                         
                         />
+                        <% if(typeof(errs) != "undefined"){ %>
+                          <h4 style="color: red"><%-errs.address%>*</h4>
+                          <%}%>
                   </div>
                 </div>
                 <div class="space"></div>
